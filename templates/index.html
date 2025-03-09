@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Music Recommendation System</h1>
+        
+        <form id="recommend-form">
+            <label for="user_id">Select User:</label>
+            <select name="user_id" id="user_id">
+                {% for user in users %}
+                    <option value="{{ user }}">{{ user }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="song_id">Select Song:</label>
+            <select name="song_id" id="song_id">
+                {% for song in songs %}
+                    <option value="{{ song.song_id }}">{{ song.title }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="rec_type">Recommendation Type:</label>
+            <select name="rec_type" id="rec_type">
+                <option value="content">Content-Based</option>
+                <option value="collaborative">Collaborative</option>
+                <option value="hybrid">Hybrid</option>
+            </select>
+            
+            <button type="submit">Get Recommendations</button>
+        </form>
+        
+        <div id="results">
+            <h2>Recommendations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Song ID</th>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Genre</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="rec-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $('#recommend-form').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/recommend',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(data) {
+                    $('#rec-table-body').empty();
+                    data.forEach(function(rec) {
+                        let score = rec.similarity || rec.predicted_rating || rec.hybrid_score || 'N/A';
+                        $('#rec-table-body').append(
+                            `<tr>
+                                <td>${rec.song_id}</td>
+                                <td>${rec.title}</td>
+                                <td>${rec.artist}</td>
+                                <td>${rec.genre}</td>
+                                <td>${score.toFixed(2)}</td>
+                            </tr>`
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
