@@ -7,4 +7,5 @@
 
 ### Tools and Technologies:
 Programming Language: Python
+
 Libraries: Pandas, NumPy, Scikit-learn, Surprise (for collaborative filtering), and Matplotlib/Seaborn for data visualization
