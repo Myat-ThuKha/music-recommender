@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendations</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; }
+        h1 { color: #1DB954; }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #fff; margin: 10px; padding: 10px; border-radius: 5px; }
+        a { text-decoration: none; color: #1DB954; }
+    </style>
+</head>
+<body>
+    <h1>Recommendations for "{{ song }}"</h1>
+    <ul>
+        {% for rec in recommendations %}
+            <li>{{ rec[0] }} by {{ rec[1] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>
