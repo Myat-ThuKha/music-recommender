@@ -1,104 +1,168 @@
-from flask import Flask, render_template, url_for, redirect
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
-from flask_bcrypt import Bcrypt
+from flask import Flask, render_template, request, redirect, url_for, session
+from pymongo import MongoClient
+# from surprise import SVD, Dataset, Reader, accuracy
+# from surprise.model_selection import train_test_split
+import pandas as pd
+import joblib
+import os
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SECRET_KEY'] = 'thisisasecretkey'
+app.secret_key = 'your-secret-key'  # Replace with a secure key
 
+# MongoDB setup
+client = MongoClient('mongodb://localhost:27017/')
+db = client['song_recommendation_db']
+users_collection = db['users']
+ratings_collection = db['ratings']
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
+# # Load the song catalog from the Kaggle dataset
+# songs = {}
+# song_popularity = {}
+# def load_songs():
+#     global songs, song_popularity
+#     try:
+#         df = pd.read_csv('top_spotify_songs.csv')  # Kaggle dataset
+#         # Assuming columns: track_id, track_name, artist_name, streams
+#         required_columns = ['track_id', 'track_name', 'artist_name', 'streams']
+#         if not all(col in df.columns for col in required_columns):
+#             print("Dataset columns:", df.columns)
+#             raise ValueError("Dataset must contain 'track_id', 'track_name', 'artist_name', and 'streams' columns")
+        
+#         # Map track_id to song info
+#         for _, row in df.iterrows():
+#             track_id = str(row['track_id'])  # Ensure track_id is a string
+#             songs[track_id] = f"{row['track_name']} by {row['artist_name']}"
+#             song_popularity[track_id] = row['streams']
+#     except Exception as e:
+#         print(f"Error loading songs: {e}")
+#         # Fallback to dummy data
+#         songs.update({
+#             'song1': 'Shape of You by Ed Sheeran',
+#             'song2': 'Bohemian Rhapsody by Queen',
+#             'song3': 'Billie Jean by Michael Jackson',
+#             'song4': 'Rolling in the Deep by Adele',
+#             'song5': 'Sweet Child O\' Mine by Guns N\' Roses'
+#         })
+#         song_popularity.update({
+#             'song1': 3200000000,
+#             'song2': 2500000000,
+#             'song3': 1800000000,
+#             'song4': 1500000000,
+#             'song5': 1200000000
+#         })
 
+# # Train and test the recommendation model
+# def train_and_test_model():
+#     # Fetch all ratings from MongoDB
+#     user_ratings = list(ratings_collection.find())
+#     if not user_ratings:
+#         return None, None
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+#     # Convert to DataFrame
+#     user_ratings_df = pd.DataFrame(user_ratings, columns=['username', 'song_id', 'rating'])
 
+#     # Prepare data for Surprise
+#     reader = Reader(rating_scale=(1, 5))
+#     data = Dataset.load_from_df(user_ratings_df[['username', 'song_id', 'rating']], reader)
 
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(80), nullable=False)
+#     # Split into training and testing sets (80% train, 20% test)
+#     trainset, testset = train_test_split(data, test_size=0.2, random_state=42)
 
+#     # Train SVD model
+#     algo = SVD()
+#     algo.fit(trainset)
 
-class RegisterForm(FlaskForm):
-    username = StringField(validators=[
-                           InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
+#     # Test the model
+#     predictions = algo.test(testset)
+#     rmse = accuracy.rmse(predictions)
+#     print(f"Model RMSE: {rmse}")
 
-    password = PasswordField(validators=[
-                             InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+#     # Optionally save the trained model to disk
+#     if not os.path.exists('models'):
+#         os.makedirs('models')
+#     joblib.dump(algo, 'models/svd_model.pkl')
 
-    submit = SubmitField('Register')
-
-    def validate_username(self, username):
-        existing_user_username = User.query.filter_by(
-            username=username.data).first()
-        if existing_user_username:
-            raise ValidationError(
-                'That username already exists. Please choose a different one.')
-
-
-class LoginForm(FlaskForm):
-    username = StringField(validators=[
-                           InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-
-    password = PasswordField(validators=[
-                             InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
-
-    submit = SubmitField('Login')
-
+#     return algo, rmse
 
 @app.route('/')
 def home():
+    if 'username' in session:
+        return render_template('home.html', username=session['username'])
     return render_template('home.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = users_collection.find_one({'username': username, 'password': password})
         if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user)
-                return redirect(url_for('dashboard'))
-    return render_template('login.html', form=form)
+            session['username'] = username
+            return redirect(url_for('home'))
+        return render_template('login.html', error='Invalid credentials')
+    return render_template('login.html')
 
-
-@app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def dashboard():
-    return render_template('dashboard.html')
-
-
-@app.route('/logout', methods=['GET', 'POST'])
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
-
-
-@ app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
-
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if users_collection.find_one({'username': username}):
+            return render_template('register.html', error='User already exists')
+        users_collection.insert_one({'username': username, 'password': password})
         return redirect(url_for('login'))
+    return render_template('register.html')
 
-    return render_template('register.html', form=form)
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('home'))
 
+# @app.route('/recommend', methods=['GET', 'POST'])
+# def recommend():
+#     if 'username' not in session:
+#         return redirect(url_for('login'))
+    
+#     # Load songs
+#     load_songs()
 
-if __name__ == "__main__":
+#     if request.method == 'POST':
+#         song_id = request.form['song_id']
+#         rating = int(request.form['rating'])
+#         # Store rating in MongoDB
+#         ratings_collection.insert_one({
+#             'username': session['username'],
+#             'song_id': song_id,
+#             'rating': rating
+#         })
+
+#     # Train and test the model
+#     algo, rmse = train_and_test_model()
+
+#     recommendations = []
+#     if algo:
+#         # Fetch user ratings to check which songs the user has already rated
+#         user_ratings = list(ratings_collection.find({'username': session['username']}))
+#         user_ratings_df = pd.DataFrame(user_ratings, columns=['username', 'song_id', 'rating'])
+
+#         # Get recommendations for the current user
+#         user_id = session['username']
+#         predictions = []
+#         for song_id in songs.keys():
+#             if not user_ratings_df.empty and song_id in user_ratings_df['song_id'].values:
+#                 continue
+#             pred = algo.predict(user_id, song_id).est
+#             predictions.append((song_id, pred))
+
+#         # Sort predictions by rating
+#         predictions.sort(key=lambda x: x[1], reverse=True)
+#         recommendations = [(song_id, songs[song_id], round(pred, 2)) for song_id, pred in predictions[:3]]
+#     else:
+#         # Fallback to popularity-based recommendations for new users
+#         sorted_songs = sorted(song_popularity.items(), key=lambda x: x[1], reverse=True)
+#         recommendations = [(song_id, songs[song_id], "Popular") for song_id, _ in sorted_songs[:3]]
+
+#     return render_template('recommendations.html', songs=songs, recommendations=recommendations, rmse=rmse)
+
+if __name__ == '__main__':
     app.run(debug=True)
