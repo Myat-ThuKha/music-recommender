@@ -1,0 +1,358 @@
+<!-- eda.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen">
+    <h2 class="text-3xl font-bold text-center text-pink-900 mb-6">Explore Our Music Data</h2>
+    <p class="text-lg text-pink-900 mb-8 text-center">Below is a comparison of columns across our datasets. Click a dataset to see its detailed analysis.</p>
+
+    <!-- Table of Columns vs Datasets -->
+    <div class="overflow-x-auto mb-8">
+        <table class="w-full border-collapse border border-gray-300 bg-yellow-100 bg-opacity-50 shadow-lg">
+            <thead>
+                <tr class="bg-yellow-100 bg-opacity-70 shadow-lg">
+                    <th class="border border-gray-300 p-2 text-left text-pink-900">Column</th>
+                    <th class="border border-gray-300 p-2 text-center text-pink-900">Individual Tracks</th>
+                    <th class="border border-gray-300 p-2 text-center text-pink-900">Artists</th>
+                    <th class="border border-gray-300 p-2 text-center text-pink-900">Genres</th>
+                    <th class="border border-gray-300 p-2 text-center text-pink-900">Yearly Trends</th>
+                    <th class="border border-gray-300 p-2 text-center text-pink-900">Artists with Genres</th>
+                    <th class="border border-gray-300 p-2 text-center text-pink-900">Merged Insights</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">artist</td>
+                    <td class="border border-gray-300 p-2 text-center text-green-500"></td>
+                    <td class="border border-gray-300 p-2 text-center text-green-500">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center text-pink-599">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">artists</td>
+                    <td class="border border-gray-300 p-2 text-center text-pink-700">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">name</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">popularity</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">duration_ms</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">danceability</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">energy</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">key</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">loudness</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">mode</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">speechiness</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">acousticness</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">instrumentalness</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">liveness</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">valence</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">tempo</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">explicit</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">id</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">release_date</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">year</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">count</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 p-2 text-pink-700">genres</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                    <td class="border border-gray-300 p-2 text-center">✔</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="text-lg text-pink-900 mb-8 text-center">Click a dataset below to see its detailed analysis.</p>
+
+    <div class="dataset-grid">
+        <div class="dataset-box bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg text-center cursor-pointer hover:bg-pink-700 hover:text-white text-pink-900" data-target="tracks" onclick="showEDA('tracks')">
+            <h3 class="font-semibold">Individual Tracks</h3>
+        </div>
+        <div class="dataset-box bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg text-center cursor-pointer hover:bg-pink-700 hover:text-white text-pink-900" data-target="artists" onclick="showEDA('artists')">
+            <h3 class="font-semibold">Artists</h3>
+        </div>
+        <div class="dataset-box bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg text-center cursor-pointer hover:bg-pink-700 hover:text-white text-pink-900" data-target="genres" onclick="showEDA('genres')">
+            <h3 class="font-semibold">Genres</h3>
+        </div>
+        <div class="dataset-box bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg text-center cursor-pointer hover:bg-pink-700 hover:text-white text-pink-900" data-target="years" onclick="showEDA('years')">
+            <h3 class="font-semibold">Yearly Trends</h3>
+        </div>
+        <div class="dataset-box bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg text-center cursor-pointer hover:bg-pink-700 hover:text-white text-pink-900" data-target="artists-genres" onclick="showEDA('artists-genres')">
+            <h3 class="font-semibold">Artists with Genres</h3>
+        </div>
+        <div class="dataset-box bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg text-center cursor-pointer hover:bg-pink-700 hover:text-white text-pink-900" data-target="merged" onclick="showEDA('merged')">
+            <h3 class="font-semibold">Merged Insights</h3>
+        </div>
+    </div>
+
+    <div id="eda-content" class="eda-details">
+        {% if selected_dataset %}
+            {% if selected_dataset == 'tracks' %}
+                <h2>Individual Tracks</h2>
+                <p>Tracks span decades, with popularity peaking post-2000 due to streaming.</p>
+                <p>Energy and loudness are strongly correlated (~0.7).</p>
+                <img src="{{ url_for('static', filename='images/popularity_by_decade.png') }}" alt="Popularity by Decade">
+            {% elif selected_dataset == 'artists' %}
+                <h2>Artists</h2>
+                <p>High track counts don’t guarantee popularity—modern artists lead.</p>
+                <p>Artists show consistent audio styles.</p>
+                <img src="{{ url_for('static', filename='images/popularity_vs_count.png') }}" alt="Popularity vs Track Count">
+            {% elif selected_dataset == 'genres' %}
+                <h2>Genres</h2>
+                <p>EDM is danceable and energetic; classical is acoustic.</p>
+                <p>Energy and loudness correlate (~0.8).</p>
+                <iframe src="{{ url_for('static', filename='plots/genre_3d_scatter.html') }}" width="100%" height="400px"></iframe>
+            {% elif selected_dataset == 'years' %}
+                <h2>Yearly Trends</h2>
+                <p>Danceability and energy rise post-1980; acousticness drops.</p>
+                <p>Popularity spikes in the streaming era.</p>
+                <img src="{{ url_for('static', filename='images/feature_trends.png') }}" alt="Feature Trends Over Time">
+            {% elif selected_dataset == 'artists-genres' %}
+                <h2>Artists with Genres</h2>
+                <p>Multi-genre artists (3-5 genres) have broader appeal.</p>
+                <p>Pop, rock, and hip-hop dominate.</p>
+                <img src="{{ url_for('static', filename='images/top_10_genres.png') }}" alt="Top 10 Genres">
+            {% elif selected_dataset == 'merged' %}
+                <h2>Merged Insights</h2>
+                <p>Modern tracks cluster in high-energy, danceable spaces.</p>
+                <p>Top genres like pop drive trends.</p>
+                <iframe src="{{ url_for('static', filename='plots/pca_clusters.html') }}" width="100%" height="400px"></iframe>
+            {% endif %}
+        {% else %}
+            <p>Select a dataset above to see its analysis.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .dataset-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 20px;
+    }
+    .dataset-box {
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .dataset-box.active {
+        background-color: #830544;
+        opacity: 0.5;
+        color: white;
+    }
+    .eda-details {
+        padding: 20px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+    }
+    .eda-details img {
+        max-width: 100%;
+        height: auto;
+    }
+    @media (max-width: 600px) {
+        .dataset-grid {
+            grid-template-columns: 1fr;
+        }
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<script>
+    function showEDA(dataset) {
+        // Update URL without reloading the page
+        history.pushState({}, '', `?dataset=${dataset}`);
+
+        // Highlight the selected box
+        const boxes = document.querySelectorAll('.dataset-box');
+        boxes.forEach(box => {
+            if (box.getAttribute('data-target') === dataset) {
+                box.classList.add('active');
+            } else {
+                box.classList.remove('active');
+            }
+        });
+
+        // Fetch the EDA content via AJAX
+        fetch(`/eda-content?dataset=${dataset}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('eda-content').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error fetching EDA content:', error);
+                document.getElementById('eda-content').innerHTML = '<p>Error loading content. Please try again.</p>';
+            });
+    }
+
+    // Highlight the selected box on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedDataset = urlParams.get('dataset');
+        if (selectedDataset) {
+            showEDA(selectedDataset);
+        }
+    });
+</script>
+{% endblock %}
