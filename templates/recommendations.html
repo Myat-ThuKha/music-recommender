@@ -2,23 +2,21 @@
 
 {% block content %}
 <div class="min-h-screen">
-    <h2 class="text-3xl font-bold text-center text-pink-900 mb-6">Rate Songs & Get Recommendations</h2>
 
     <!-- Rate Songs -->
     <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg mb-8 bg-opacity-50">
-        <h3 class="text-xl font-semibold text-pink-900 mb-4">Rate Songs</h3>
-        <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <h3 class="text-xl font-semibold text-pink-900 mb-4">Recommended Songs Based On Your Input</h3>
+        <form method="POST" action="/recommendation" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <label for="song_id" class="block text-pink-900 mb-2">Select Song</label>
-                <select name="song_id" id="song_id" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white bg-opacity-30">
-                </select>
+                <label for="song_id" class="block text-pink-900 mb-2">Enter Song Name</label>
+                <input type = "text" name="song_name" id="song_name" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white bg-opacity-30" required>
             </div>
             <div>
-                <label for="rating" class="block text-pink-900 mb-2">Rating (1-5)</label>
-                <input type="number" name="rating" id="rating" min="1" max="5" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white bg-opacity-30" required>
+                <label for="song_id" class="block text-pink-900 mb-2">Enter Artist Name</label>
+                <input type = "text" name="artist" id="artist" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white bg-opacity-30" required>
             </div>
             <div class="flex items-end">
-                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg bg-opacity-50 transition duration-300 bg-opacity-50">Submit Rating</button>
+                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg bg-opacity-50 transition duration-300 bg-opacity-50">Submit</button>
             </div>
         </form>
     </div>
@@ -30,34 +28,6 @@
         </div>
     {% endif %} -->
 
-    <div clas="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg">
-        <h3 class="text-xl font-semibold text-pink-900 mb-4">Recommended Songs</h3>
-        <ul class="space-y-4">
-            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50 bg-opacity-50">
-                <!-- point to next page for song details when click on song title -->
-                <a href="/songDetails" class="text-pink-700 hover:underline">Abracadabra</a>
-                <span class="text-pink-700">Lady Gaga</span>
-                <span class="text-pink-700">Electropop</span>
-                <span class="text-pink-700">
-                    Highly Popular
-                </span>
-                <!-- link youtube -->
-                <a href="https://www.youtube.com/watch?v=video_id" class="text-pink-700 hover:underline">Listen</a>
-            </li>
-            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
-                <span>APT</span>
-                <span class="text-pink-700">
-                    Rose, Bruno Mars
-                </span>
-                <span>Pop</span>
-                <span class="text-pink-700">
-                    Predicted Rating: 4
-                </span>
-                <!-- link youtube -->
-                <a href="https://www.youtube.com/watch?v=video_id" class="text-pink-700 hover:underline">Listen</a>
-            </li>
-        </ul>
-    </div>
     <!-- Recommendations -->
     <!-- {% if recommendations %}
         <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg">

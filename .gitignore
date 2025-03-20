@@ -1,0 +1,8 @@
+data/data_by_artist.csv
+data/data_by_genres.csv
+data/data_by_year.csv
+data/data_w_genres.csv
+data/data.csv
+data/user_history.csv
+__pycache__/collaborative_recommender.cpython-311.pyc
+__pycache__/contentbased_recommender.cpython-311.pyc
