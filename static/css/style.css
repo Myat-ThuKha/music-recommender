@@ -35,3 +35,22 @@ nav a i {
 nav a:hover i {
     transform: scale(1.2);
 }
+
+.image-container {
+    text-align: center; /* Center the image horizontally */
+    margin-bottom: 16px; /* Matches mb-4 in Tailwind (16px) */
+}
+.image-container img {
+    display: block; /* Make the image a block element so text-align works */
+    margin: 0 auto; /* Center the image horizontally */
+    max-width: 100%; /* Ensure the image scales responsively */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Matches rounded-md */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Matches shadow-md */
+}
+.image-container p {
+    color: #9d174d; /* Matches text-pink-700 */
+    font-size: 14px; /* Matches text-sm */
+    text-align: center;
+    margin-top: 8px; /* Matches mt-2 in Tailwind (8px) */
+}

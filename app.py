@@ -190,94 +190,88 @@ def eda_content():
     selected_dataset = request.args.get('dataset', None)
     if selected_dataset == 'tracks':
         return '''
-            <h2>Individual Tracks</h2>
-            <p>Tracks span decades, with popularity peaking post-2000 due to streaming.</p>
-            <p>Energy and loudness are strongly correlated (~0.7).</p>
-            <img src="/static/images/popularity_by_decade.png" alt="Popularity by Decade">
+            <div class="dataset-card bg-yellow-100 bg-opacity-50 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                <h2 class="text-pink-900 text-2xl font-bold text-center mb-4">Individual Tracks</h2>
+                <p class="text-pink-700 text-lg leading-relaxed mb-2"><span class="font-bold">Diversity:</span> Tracks span decades with varied artist representation</p>
+                <p class="text-pink-700 text-lg leading-relaxed mb-2"><span class="font-bold">Trends:</span> Popularity skews modern; audio features correlate (e.g., energy and loudness)</p>
+                <p class="text-pink-700 text-lg leading-relaxed mb-4"><span class="font-bold">Insight:</span> Musical keys and modes suggest composition biases; recent decades dominate popularity due to streaming.</p>
+                <div class="image-container mb-4">
+                    <img src="/static/images/tracks/tracks_distribution.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                    <p class="text-pink-700 text-sm text-center mt-2">Distribution of Tracks Across Decades</p>
+                </div>
+                <div class="image-container">
+                    <img src="/static/images/tracks/track_Correlation.png" alt="Track Correlation" class="rounded-md shadow-md" align="center">
+                    <p class="text-pink-700 text-sm text-center mt-2">Correlation Between Audio Features</p>
+                </div>
+            </div>
         '''
     elif selected_dataset == 'artists':
         return '''
-            <h2>Artists</h2>
-            <p>High track counts don’t guarantee popularity—modern artists lead.</p>
-            <p>Artists show consistent audio styles.</p>
-            <img src="/static/images/popularity_vs_count.png" alt="Popularity vs Track Count">
+            <h2 class="text-pink-900 text-center font-bold" text-center font-bold">Artists</h2>
+            <p class=text-pink-700><b>Variability</b>: Artists range from niche (low count) to prolific (high count).</p>
+            <p class=text-pink-700><b>Popularity</b>: Not strongly tied to output—modern artists excel.</p>
+            <p class=text-pink-700><b>Insight</b>: Feature averages reflect artist style consistency; outliers indicate unique profiles.</p>
+            <div class="image-container mb-4">
+                    <img src="/static/images/artists/distributionFeatures.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
+            <div class="image-container mb-4">
+                    <img src="/static/images/artists/popularityVsTrackCount.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
+
         '''
     elif selected_dataset == 'genres':
         return '''
-            <h2>Genres</h2>
-            <p>EDM is danceable and energetic; classical is acoustic.</p>
-            <p>Energy and loudness correlate (~0.8).</p>
-            <iframe src="/static/plots/genre_3d_scatter.html" width="100%" height="400px"></iframe>
+            <h2 class="text-pink-900 text-center font-bold">Genres</h2>
+            <p class=text-pink-700><b>Clustering</b>: Genres form distinct feature clusters (e.g., high dance/energy for Dance genres).</p>
+            <p class=text-pink-700><b>Correlations</b>: Strong relationships between energy, loudness, and acousticness.</p>
+            <p class=text-pink-700><b>Insight</b>: Genre defines sound; danceable genres align with modern trends.</p>
+            <div class="image-container mb-4">
+                    <img src="/static/images/genres/correlation.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
         '''
     elif selected_dataset == 'years':
         return '''
-            <h2>Yearly Trends</h2>
-            <p>Danceability and energy rise post-1980; acousticness drops.</p>
-            <p>Popularity spikes in the streaming era.</p>
-            <img src="/static/images/feature_trends.png" alt="Feature Trends Over Time">
+            <h2 class="text-pink-900 text-center font-bold">Yearly Trends</h2>
+            <p class=text-pink-700><b>Evolution</b>: Clear shift from acoustic to danceable/energetic music over time.</p>
+            <p class=text-pink-700><b>Popularity</b>: Rises with streaming era.</p>
+            <p class=text-pink-700><b>Insight</b>: Reflects technological (e.g., production) and cultural (e.g., dance music) shifts.</p>
+            <div class="image-container mb-4">
+                    <img src="/static/images/year/5YearRollingAverage.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
+            <div class="image-container mb-4">
+                    <img src="/static/images/year/audioFeaturesOverTime.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
         '''
     elif selected_dataset == 'artists-genres':
         return '''
-            <h2>Artists with Genres</h2>
-            <p>Multi-genre artists (3-5 genres) have broader appeal.</p>
-            <p>Pop, rock, and hip-hop dominate.</p>
-            <img src="/static/images/top_10_genres.png" alt="Top 10 Genres">
+            <h2 class="text-pink-900 text-center font-bold">Artists with Genres</h2>
+            <p class=text-pink-700><b>Versatility</b>: Many artists span multiple genres.</p>
+            <p class=text-pink-700><b>Popularity</b>: Multi-genre artists show varied success</p>
+            <p class=text-pink-700><b>Insight</b>: Genre count may broaden appeal or dilute focus.</p>
+            <div class="image-container mb-4">
+                    <img src="/static/images/artistWgenres/numberOfGenresPerArtist.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
+            <div class="image-container mb-4">
+                    <img src="/static/images/artistWgenres/top10genresperArtist.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
         '''
     elif selected_dataset == 'merged':
         return '''
-            <h2>Merged Insights</h2>
-            <p>Modern tracks cluster in high-energy, danceable spaces.</p>
-            <p>Top genres like pop drive trends.</p>
-            <iframe src="/static/plots/pca_clusters.html" width="100%" height="400px"></iframe>
+            <h2 class="text-pink-900 text-center font-bold">Merged Insights</h2>
+            <p class=text-pink-700><b>Integration</b>: Merging reveals how tracks align with artist and genre averages over time.</p>
+            <p class=text-pink-700><b>Deviation</b>: Tracks deviating from genre norms (e.g., danceability_dev) may be innovative.</p>
+            <p class=text-pink-700><b>Insight</b>: Top genres drive popularity trends; modern tracks cluster in high-energy/dance space.</p>
+            <div class="image-container mb-4">
+                    <img src="/static/images/cross/popularity_trend.png" alt="Tracks Distribution" class="rounded-md shadow-md">
+                </div>
         '''
     else:
-        return '<p>Select a dataset above to see its analysis.</p>'
+        return '<p class=text-pink-700>Select a dataset above to see its analysis.</p>'
 
-# @app.route('/recommend', methods=['GET', 'POST'])
-# def recommend():
-#     if 'username' not in session:
-#         return redirect(url_for('login'))
-    
-#     # Load songs
-#     load_songs()
+@app.route('/eda_data_details', methods=['GET'])
+def eda_data_details():
+    return render_template('EDA_data.html')
 
-#     if request.method == 'POST':
-#         song_id = request.form['song_id']
-#         rating = int(request.form['rating'])
-#         # Store rating in MongoDB
-#         ratings_collection.insert_one({
-#             'username': session['username'],
-#             'song_id': song_id,
-#             'rating': rating
-#         })
-
-#     # Train and test the model
-#     algo, rmse = train_and_test_model()
-
-#     recommendations = []
-#     if algo:
-#         # Fetch user ratings to check which songs the user has already rated
-#         user_ratings = list(ratings_collection.find({'username': session['username']}))
-#         user_ratings_df = pd.DataFrame(user_ratings, columns=['username', 'song_id', 'rating'])
-
-#         # Get recommendations for the current user
-#         user_id = session['username']
-#         predictions = []
-#         for song_id in songs.keys():
-#             if not user_ratings_df.empty and song_id in user_ratings_df['song_id'].values:
-#                 continue
-#             pred = algo.predict(user_id, song_id).est
-#             predictions.append((song_id, pred))
-
-#         # Sort predictions by rating
-#         predictions.sort(key=lambda x: x[1], reverse=True)
-#         recommendations = [(song_id, songs[song_id], round(pred, 2)) for song_id, pred in predictions[:3]]
-#     else:
-#         # Fallback to popularity-based recommendations for new users
-#         sorted_songs = sorted(song_popularity.items(), key=lambda x: x[1], reverse=True)
-#         recommendations = [(song_id, songs[song_id], "Popular") for song_id, _ in sorted_songs[:3]]
-
-#     return render_template('recommendations.html', songs=songs, recommendations=recommendations, rmse=rmse)
 
 if __name__ == '__main__':
     app.run(debug=True)

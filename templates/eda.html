@@ -246,7 +246,7 @@
         </div>
     </div>
 
-    <div id="eda-content" class="eda-details">
+    <div id="eda-content" class="eda-details bg-yellow-100 bg-opacity-50 shadow-lg text-pink-900">
         {% if selected_dataset %}
             {% if selected_dataset == 'tracks' %}
                 <h2>Individual Tracks</h2>
@@ -283,6 +283,9 @@
             <p>Select a dataset above to see its analysis.</p>
         {% endif %}
     </div>
+    <div class="text-center mt-8 bg-yellow-100 bg-opacity-50 shadow-lg p-4">
+        <a href="/eda_data_details" class="py-2 px-4 hover:underline text-pink-900">Click to See more about EDA for the data</a>
+    </div>
 </div>
 
 <style>
@@ -308,6 +311,8 @@
     .eda-details img {
         max-width: 100%;
         height: auto;
+        align-self: center;
+        
     }
     @media (max-width: 600px) {
         .dataset-grid {
