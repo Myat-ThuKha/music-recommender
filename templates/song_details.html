@@ -1,0 +1,153 @@
+<!-- song details page -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen">
+    <!-- Song Details -->
+     <!-- want to be transparency in bg-yellow-100 -->
+    <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg mb-8 bg-opacity-50">
+        <h3 class="text-xl font-semibold text-pink-900 mb-4">Song Details</h3>
+        <ul class="space-y-4">
+            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
+                <span class="text-pink-700">Song Title: </span>
+                <span class="text-pink-700">Abracadabra</span>
+            </li>
+            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
+                <span class="text-pink-700">Artist: </span>
+                <span class="text-pink-700">Lady Gaga</span>
+            </li>
+            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
+                <span class="text-pink-700">Genre: </span>
+                <span class="text-pink-700">Electropop</span>
+            </li>
+            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
+                <span class="text-pink-700">Popularity: </span>
+                <span class="text-pink-700">Highly Popular</span>
+            </li>
+            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
+                <span class="text-pink-700">Listen: </span>
+                <a href="https://www.youtube.com/watch?v=video_id" class="text-pink-700 hover:underline">Listen</a>
+            </li>
+        </ul>
+
+        <!-- Play video -->
+        <div class="flex justify-center mt-4">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/video_id" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+    <!-- song analyze dashboard -->
+    <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg bg-opacity-50">
+        <h3 class="text-xl font-semibold text-pink-900 mb-4">Song Analysis</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-yellow-100 p-4 rounded-lg bg-opacity-50">
+                <h4 class="text-lg font-semibold text-pink-900 mb-2">Audio Features</h4>
+                <ul class="space-y-2">
+                    <li class="flex justify-between items-center">
+                        <span>Acousticness</span>
+                        <span>0.123</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Danceability</span>
+                        <span>0.456</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Energy</span>
+                        <span>0.789</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Instrumentalness</span>
+                        <span>0.234</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Liveness</span>
+                        <span>0.567</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Loudness</span>
+                        <span>-6.789</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Speechiness</span>
+                        <span>0.345</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Tempo</span>
+                        <span>123.456</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Valence</span>
+                        <span>0.678</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-yellow-100 p-4 rounded-lg bg-opacity-50 shadow-lg">
+                <h4 class="text-lg font-semibold text-pink-900 mb-2">Lyrics</h4>
+                <p class="text-pink-900">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+            </div>
+        </div>
+    </div>
+
+    <!-- user popularity analysis with illustrations(bar graph/pie chart) -->
+    <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg mt-8 bg-opacity-50">
+        <h3 class="text-xl font-semibold text-pink-900 mb-4">User Popularity Analysis</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-yellow-100 p-4 rounded-lg bg-opacity-50 shadow-lg">
+                <h4 class="text-lg font-semibold text-pink-900 mb-2">User Ratings</h4>
+                <canvas id="userRatings"></canvas>
+            </div>
+            <div class="bg-yellow-100 p-4 rounded-lg bg-opacity-50 shadow-lg">
+                <h4 class="text-lg font-semibold text-pink-900 mb-2">User Popularity</h4>
+                <canvas id="userPopularity"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg mt-8 bg-opacity-50">
+        <h3 class="text-xl font-semibold text-pink-900 mb-4">Recommend Songs</h3>
+    
+        <!-- Display message if the user hasn't rated -->
+        <div id="ratingPrompt" class="text-pink-900">
+            <p>Rate this song to get personalized recommendations!</p>
+            <div class="flex items-center mt-4">
+                <span class="text-pink-900">Rate this song:</span>
+                <div class="flex space
+                -x-2 ml-4">
+                    <span class="star text-2xl" data-rating="1">★</span>
+                    <span class="star text-2xl" data-rating="2">★</span>
+                    <span class="star text-2xl" data-rating="3">★</span>
+                    <span class="star text-2xl" data-rating="4">★</span>
+                    <span class="star text-2xl" data-rating="5">★</span>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button class="bg-pink-600 hover:bg-pink-900 text-white font-bold py-2 px-4 rounded-lg bg-opacity-50 transition duration-300" type="submit">Submit Rating</button>
+                </div>
+        </div>
+    </div>
+</div>
+ 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".star");
+        let selectedRating = 0;
+    
+        stars.forEach(star => {
+            star.addEventListener("click", function () {
+                selectedRating = this.getAttribute("data-rating");
+                highlightStars(selectedRating);
+                fetchRecommendations(selectedRating);
+            });
+        });
+    
+        function highlightStars(rating) {
+            stars.forEach(star => {
+                star.classList.remove("text-pink-900");
+                if (star.getAttribute("data-rating") <= rating) {
+                    star.classList.add("text-pink-900");
+                }
+            });
+        }
+    });
+    </script>
+    
+{% endblock %}
