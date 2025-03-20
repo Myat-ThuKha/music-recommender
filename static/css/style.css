@@ -1,11 +1,15 @@
 /* Background and Animations */
 body {
-    background: linear-gradient(135deg, #721daefa, #2d3748);
+    background: linear-gradient(135deg, #24f7edfa, #2d3748);
 }
 
 #particles-js {
-    background: linear-gradient(135deg, #721daefa, #2d3748);
+    background: linear-gradient(135deg, #24f7edfa, #2d3748);
 }
+
+/* #particles-js-2 {
+    background: linear-gradient(135deg, #24f7edfa, #2d3748);
+} */
 
 .animate-bounce {
     animation: bounce 2s infinite;

@@ -1,11 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize particles.js
+
     if (document.getElementById('particles-js')) {
         particlesJS('particles-js', {
             particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
+                number: { value: 250,density: { enable: true, value_area: 800 } },
                 color: { value: '#daa7e8' },
-                shape: { type: 'circle' },
+                shape: { type: 'image',
+                    image:{
+                        width: 1024,
+                        height: 1024,
+                        src: "/static/music_notes.png"
+                    }
+                },
                 opacity: { value: 0.5, random: true },
                 size: { value: 3, random: true },
                 line_linked: { enable: true, distance: 150, color: '#daa7e8', opacity: 0.4, width: 1 },
@@ -19,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
             retina_detect: true
         });
     }
-
     // Form validation
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {

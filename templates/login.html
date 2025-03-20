@@ -2,24 +2,23 @@
 
 {% block content %}
 <div class="flex items-center justify-center min-h-screen">
-    <div id="particles-js" class="absolute inset-0 z-0"></div>
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-3xl font-bold text-center text-purple-400 mb-6">Login</h2>
+    <div class="bg-yellow-100 p-8 rounded-lg shadow-lg w-full max-w-md bg-opacity-50 shadow-lg">
+        <h2 class="text-3xl font-bold text-center text-pink-900 mb-6">Login</h2>
         {% if error %}
             <p class="text-red-500 text-center mb-4">{{ error }}</p>
         {% endif %}
         <form method="POST">
             <div class="mb-4">
-                <label for="username" class="block text-gray-300 mb-2">Username</label>
-                <input type="text" name="username" id="username" class="w-full p-3 bg-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                <label for="username" class="block text-pink-900 mb-2">Username</label>
+                <input type="text" name="username" id="username" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white focus:outline-none focus:ring-2 focus:ring-pink-600" required>
             </div>
             <div class="mb-6">
-                <label for="password" class="block text-gray-300 mb-2">Password</label>
-                <input type="password" name="password" id="password" class="w-full p-3 bg-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                <label for="password" class="block text-pink-900 mb-2">Password</label>
+                <input type="password" name="password" id="password" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white focus:outline-none focus:ring-2 focus:ring-pink-600" required>
             </div>
-            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition duration-300">Login</button>
+            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg bg-opacity-50 transition duration-300">Login</button>
         </form>
-        <p class="text-gray-400 text-center mt-4">Don't have an account? <a href="/register" class="text-purple-400 hover:underline">Register</a></p>
+        <p class="text-pink-700 text-center mt-4">Don't have an account? <a href="/register" class="text-pink-700 hover:underline">Register</a></p>
     </div>
 </div>
 {% endblock %}

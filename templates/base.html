@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Song Recommender</title>
+    <title>VibeScape</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-pink-900 text-white">
     <!-- Navigation Bar -->
-    <nav class="bg-gray-800 p-4 shadow-lg">
+    <nav class="bg-yellow-100 p-4 shadow-lg bg-opacity-90">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-purple-400 flex items-center">
-                <i class="fas fa-music mr-2"></i> Song Recommender
+            <a href="/" class="text-2xl font-bold text-pink-900  hover:text-teal-700 flex items-center">
+                <i class="fas fa-music mr-2"></i> VibeScape
             </a>
             <div class="flex items-center space-x-4">
                 {% if 'username' in session %}
-                    <span class="text-gray-300">Welcome, {{ session['username'] }}</span>
-                    <a href="/recommend" class="text-gray-300 hover:text-purple-400 flex items-center">
+                    <a class="text-pink-900 hover:text-teal-700 flex items-center" href="/info">Welcome, {{ session['username'] }}</span>
+                    <a href="/recommend" class="text-pink-900 hover:text-teal-700 flex items-center">
                         <i class="fas fa-star mr-1"></i> Recommend
                     </a>
-                    <a href="/logout" class="text-gray-300 hover:text-purple-400 flex items-center">
+                    <a href="/eda" class="text-pink-900 hover:text-teal-700 flex items-center" href="/edit_info">
+                        <i class="fas fa-chart-column mr-1"></i> EDA
+                    </a>
+                    <a href="/logout" class="text-pink-900 hover:text-teal-700 flex items-center">
                         <i class="fas fa-sign-out-alt mr-1"></i> Logout
                     </a>
                 {% else %}
-                    <a href="/login" class="text-gray-300 hover:text-purple-400 flex items-center">
+                    <a href="/login" class="text-pink-900 hover:text-teal-700 flex items-center">
                         <i class="fas fa-sign-in-alt mr-1"></i> Login
                     </a>
-                    <a href="/register" class="text-gray-300 hover:text-purple-400 flex items-center">
+                    <a href="/register" class="text-pink-900 hover:text-teal-700 flex items-center">
                         <i class="fas fa-user-plus mr-1"></i> Register
                     </a>
                 {% endif %}
@@ -44,8 +47,8 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 p-4 text-center mt-10">
-        <p class="text-gray-400">© 2023 Song Recommender. All rights reserved.</p>
+    <footer class="bg-yellow-100 p-4 text-center mt-10 bg-opacity-90">
+        <p class="text-pink-700">© 2025 VibeScape. All rights reserved.</p>
     </footer>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

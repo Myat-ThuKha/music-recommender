@@ -98,6 +98,10 @@ def login():
         user = users_collection.find_one({'username': username, 'password': password})
         if user:
             session['username'] = username
+            if 'bio' in user:
+                session['bio'] = user['bio']
+            session['joined'] = user['joined']
+            session['password'] = password
             return redirect(url_for('home'))
         return render_template('login.html', error='Invalid credentials')
     return render_template('login.html')
@@ -109,14 +113,125 @@ def register():
         password = request.form['password']
         if users_collection.find_one({'username': username}):
             return render_template('register.html', error='User already exists')
-        users_collection.insert_one({'username': username, 'password': password})
+        users_collection.insert_one({'username': username, 'password': password, 'joined': pd.Timestamp.now()})
         return redirect(url_for('login'))
     return render_template('register.html')
 
+@app.route('/editProfile', methods=['GET', 'POST'])
+def editProfile():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    else :
+        if request.method == 'POST':
+            if 'username' in request.form:
+                username = request.form['username']
+            else:
+                username = session['username']
+            if 'password' in request.form:
+                password = request.form['password']
+            else:
+                password = session['password']
+            bio = request.form['bio']
+            users_collection.update_one({'username': session['username']}, {'$set': {'username': username, 'password': password, 'bio': bio}})
+            return redirect(url_for('info'))
+    return render_template('edit_info.html')
+
+@app.route('/deleteAccount', methods=['GET', 'POST'])
+def deleteAccount():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('delete_account.html')
+
+
+@app.route('/info', methods=['GET'])
+def info():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    else: 
+        user = users_collection.find_one({'username': session['username']})
+        if user: 
+            session['username'] = user['username']
+            if 'bio' in user:  
+                session['bio'] = user['bio']
+            if 'joined' in user:
+                session['joined'] = user['joined']
+            return render_template('info.html', username=session['username'], bio=session['bio'], joined=session['joined'])
+        return render_template('info.html')
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
+
+@app.route('/recommend', methods=['GET', 'POST'])
+def recommend():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('recommendations.html')
+
+@app.route('/songDetails', methods=['GET'])
+def songDetails():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('song_details.html')
+
+@app.route('/recommendSongList', methods=['GET'])
+def recommendSongList():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('recommended_songs.html')
+
+@app.route('/eda', methods=['GET'])
+def eda():
+    selected_dataset = request.args.get('dataset', None)
+    return render_template('eda.html', selected_dataset=selected_dataset)
+
+@app.route('/eda-content', methods=['GET'])
+def eda_content():
+    selected_dataset = request.args.get('dataset', None)
+    if selected_dataset == 'tracks':
+        return '''
+            <h2>Individual Tracks</h2>
+            <p>Tracks span decades, with popularity peaking post-2000 due to streaming.</p>
+            <p>Energy and loudness are strongly correlated (~0.7).</p>
+            <img src="/static/images/popularity_by_decade.png" alt="Popularity by Decade">
+        '''
+    elif selected_dataset == 'artists':
+        return '''
+            <h2>Artists</h2>
+            <p>High track counts don’t guarantee popularity—modern artists lead.</p>
+            <p>Artists show consistent audio styles.</p>
+            <img src="/static/images/popularity_vs_count.png" alt="Popularity vs Track Count">
+        '''
+    elif selected_dataset == 'genres':
+        return '''
+            <h2>Genres</h2>
+            <p>EDM is danceable and energetic; classical is acoustic.</p>
+            <p>Energy and loudness correlate (~0.8).</p>
+            <iframe src="/static/plots/genre_3d_scatter.html" width="100%" height="400px"></iframe>
+        '''
+    elif selected_dataset == 'years':
+        return '''
+            <h2>Yearly Trends</h2>
+            <p>Danceability and energy rise post-1980; acousticness drops.</p>
+            <p>Popularity spikes in the streaming era.</p>
+            <img src="/static/images/feature_trends.png" alt="Feature Trends Over Time">
+        '''
+    elif selected_dataset == 'artists-genres':
+        return '''
+            <h2>Artists with Genres</h2>
+            <p>Multi-genre artists (3-5 genres) have broader appeal.</p>
+            <p>Pop, rock, and hip-hop dominate.</p>
+            <img src="/static/images/top_10_genres.png" alt="Top 10 Genres">
+        '''
+    elif selected_dataset == 'merged':
+        return '''
+            <h2>Merged Insights</h2>
+            <p>Modern tracks cluster in high-energy, danceable spaces.</p>
+            <p>Top genres like pop drive trends.</p>
+            <iframe src="/static/plots/pca_clusters.html" width="100%" height="400px"></iframe>
+        '''
+    else:
+        return '<p>Select a dataset above to see its analysis.</p>'
 
 # @app.route('/recommend', methods=['GET', 'POST'])
 # def recommend():

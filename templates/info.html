@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen">
+    <div class="bg-yellow-100 p-8 rounded-lg bg-opacity-50 shadow-lg w-full max-w-md text-center">
+        {% if 'username' in session %}
+        <div class="flex flex-col items-center">
+            <!-- User Icon -->
+            <div class="w-24 h-24 bg-pink-500 text-white flex items-center justify-center rounded-full text-4xl font-bold mb-4">
+                <span>{{ session['username'][0].upper() }}</span> <!-- First letter of username -->
+            </div>
+
+            <!-- User Info -->
+            <h2 class="text-3xl font-bold text-pink-700 mb-2">{{ session['username'] }}</h2>
+            <p class="text-pink-900">📅 Joined: <span class="font-semibold">{{ session['joined']}}</span></p>
+            <p class="text-pink-900 mt-2">📝 Bio: <span class="italic">{{session['bio']}}</span></p>
+
+            <!-- Edit Profile Button -->
+            <a href="/editProfile" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                Edit Profile
+            </a>
+
+            <!-- Favorite Songs Section -->
+            {% if favorite_songs %}
+            <h3 class="text-2xl font-bold text-pink-700 mt-6 mb-4">🎶 Favorite Songs</h3>
+            <ul class="list-disc list-inside text-pink-900">
+                {% for song in favorite_songs %}
+                <li class="py-2 font-semibold">{{ song }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-pink-900 mt-4">No favorite songs added yet.</p>
+            {% endif %}
+
+            <!-- Logout Button
+            <a href="/logout" class="block text-center bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg bg-opacity-50 transition duration-300 mt-6">
+                Logout
+            </a> -->
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

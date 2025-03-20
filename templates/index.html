@@ -7,7 +7,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div id="particles-js" class="absolute inset-0 z-0"></div>
     <div class="container">
         <h1>Music Recommendation System</h1>
         
@@ -21,9 +20,9 @@
             
             <label for="song_id">Select Song:</label>
             <select name="song_id" id="song_id">
-                {% for song in songs %}
+                <!-- {% for song in songs %}
                     <option value="{{ song.song_id }}">{{ song.title }}</option>
-                {% endfor %}
+                {% endfor %} -->
             </select>
             
             <label for="rec_type">Recommendation Type:</label>
