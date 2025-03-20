@@ -2,83 +2,216 @@
 
 {% block content %}
 <div class="min-h-screen">
-    <h2 class="text-3xl font-bold text-center text-pink-900 mb-6">Rate Songs & Get Recommendations</h2>
+    <h2 class="text-3xl font-bold text-center text-pink-900 mb-6 animate-fade-in">Choose How We Recommend Songs</h2>
 
-    <!-- Rate Songs -->
-    <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg mb-8 bg-opacity-50">
-        <h3 class="text-xl font-semibold text-pink-900 mb-4">Rate Songs</h3>
-        <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-                <label for="song_id" class="block text-pink-900 mb-2">Select Song</label>
-                <select name="song_id" id="song_id" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white bg-opacity-30">
-                </select>
-            </div>
-            <div>
-                <label for="rating" class="block text-pink-900 mb-2">Rating (1-5)</label>
-                <input type="number" name="rating" id="rating" min="1" max="5" class="w-full p-3 bg-yellow-100 rounded-lg bg-opacity-50 text-white bg-opacity-30" required>
-            </div>
-            <div class="flex items-end">
-                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg bg-opacity-50 transition duration-300 bg-opacity-50">Submit Rating</button>
-            </div>
-        </form>
+    <!-- Song Selection Box -->
+    <div class="mb-8 max-w-2xl mx-auto">
+        <label for="song-search" class="block text-lg font-semibold text-pink-900 mb-2">Search for a Song</label>
+        <input type="text" id="song-search" class="w-full p-3 rounded-lg border border-pink-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-yellow bg-opacity-75 shadow-lg text-pink-700" placeholder="Type a song name or artist...">
+        <div id="song-results" class="mt-2 bg-yellow-100 bg-opacity-50 rounded-lg shadow-lg max-h-48 overflow-y-auto hidden">
+            <!-- Search results will be dynamically populated here -->
+        </div>
     </div>
 
-    <!-- Model Performance -->
-    <!-- {% if rmse %}
-        <div class="bg-yellow-100 p-4 rounded-lg bg-opacity-50 shadow-lg mb-8 text-center">
-            <p class="text-pink-900">Model Performance (RMSE): {{ rmse|round(2) }}</p>
+    <!-- Filtering Methods Selection -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="filter-box p-6 bg-yellow-100 rounded-lg shadow-lg text-center cursor-pointer transform transition duration-500 hover:bg-pink-700 bg-opacity-50 group shadow-lg"
+            onclick="setActive(this, 'collaborative')">
+            <h3 class="text-xl font-semibold text-pink-900 group-hover:text-white">What Others Like</h3>
+            <p class="text-pink-700 group-hover:text-white">Based on what similar users enjoy</p>
         </div>
-    {% endif %} -->
-
-    <div clas="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg">
-        <h3 class="text-xl font-semibold text-pink-900 mb-4">Recommended Songs</h3>
-        <ul class="space-y-4">
-            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50 bg-opacity-50">
-                <!-- point to next page for song details when click on song title -->
-                <a href="/songDetails" class="text-pink-700 hover:underline">Abracadabra</a>
-                <span class="text-pink-700">Lady Gaga</span>
-                <span class="text-pink-700">Electropop</span>
-                <span class="text-pink-700">
-                    Highly Popular
-                </span>
-                <!-- link youtube -->
-                <a href="https://www.youtube.com/watch?v=video_id" class="text-pink-700 hover:underline">Listen</a>
-            </li>
-            <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
-                <span>APT</span>
-                <span class="text-pink-700">
-                    Rose, Bruno Mars
-                </span>
-                <span>Pop</span>
-                <span class="text-pink-700">
-                    Predicted Rating: 4
-                </span>
-                <!-- link youtube -->
-                <a href="https://www.youtube.com/watch?v=video_id" class="text-pink-700 hover:underline">Listen</a>
-            </li>
-        </ul>
+        <div class="filter-box p-6 bg-yellow-100 rounded-lg shadow-lg text-center cursor-pointer transform transition duration-500 hover:bg-pink-700 bg-opacity-50 group shadow-lg"
+            onclick="setActive(this, 'content')">
+            <h3 class="text-xl font-semibold text-pink-900 group-hover:text-white">Similar Songs</h3>
+            <p class="text-pink-700 group-hover:text-white">Based on songs with similar features</p>
+        </div>
+        <div class="filter-box p-6 bg-yellow-100 rounded-lg shadow-lg text-center cursor-pointer transform transition duration-500 hover:bg-pink-700 bg-opacity-50 group shadow-lg"
+            onclick="setActive(this, 'hybrid')">
+            <h3 class="text-xl font-semibold text-pink-900 group-hover:text-white">Best of Both</h3>
+            <p class="text-pink-700 group-hover:text-white">Combining user preferences and song features</p>
+        </div>
     </div>
-    <!-- Recommendations -->
-    <!-- {% if recommendations %}
-        <div class="bg-yellow-100 p-6 rounded-lg bg-opacity-50 shadow-lg">
-            <h3 class="text-xl font-semibold text-pink-900 mb-4">Recommended Songs</h3>
-            <ul class="space-y-4">
-                {% for song_id, song_name, pred in recommendations %}
-                    <li class="flex justify-between items-center bg-yellow-100 p-4 rounded-lg bg-opacity-50">
-                        <span>{{ song_name }}</span>
-                        <span class="text-pink-700">
-                            {% if pred == "Popular" %}
-                                Highly Popular
-                            {% else %}
-                                Predicted Rating: {{ pred }}
-                            {% endif %}
-                        </span>
-                    </li>
-                {% endfor %}
-            </ul>
+
+    <!-- Recommendation Tables -->
+    <div id="recommendation-container" class="mt-8">
+        <!-- Collaborative Filtering Recommendations -->
+        <div id="collaborative" class="recommendation-list hidden opacity-0 transform scale-95 transition-all duration-500">
+            <h3 class="text-xl font-semibold text-pink-900 mb-4">What Others Like</h3>
+            <table class="min-w-full bg-white bg-opacity-75 rounded-lg shadow-lg overflow-hidden">
+                <thead class="bg-yellow-100 text-white bg-opacity-70 shadow-lg">
+                    <tr class="border-b border-pink-500">
+                        <th class="p-4 text-left text-pink-900">Song Name</th>
+                        <th class="p-4 text-left text-pink-900">Artist</th>
+                        <th class="p-4 text-left text-pink-900">Year</th>
+                        <th class="p-4 text-left text-pink-900">Album</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Song A</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 1</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">2020</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 1</td>
+                    </tr>
+                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Song B</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 2</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">2019</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 2</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    {% else %}
-        <p class="text-pink-700 text-center">Rate some songs to get personalized recommendations!</p>
-    {% endif %} -->
+
+        <!-- Content-Based Filtering Recommendations -->
+        <div id="content" class="recommendation-list hidden opacity-0 transform scale-95 transition-all duration-500">
+            <h3 class="text-xl font-semibold text-pink-900 mb-4">Similar Songs</h3>
+            <table class="min-w-full bg-white bg-opacity-75 rounded-lg shadow-lg overflow-hidden">
+                <thead class="bg-yellow-100 text-white bg-opacity-70 shadow-lg">
+                    <tr class="border-b border-pink-500">
+                        <th class="p-4 text-left text-pink-900">Song Name</th>
+                        <th class="p-4 text-left text-pink-900">Artist</th>
+                        <th class="p-4 text-left text-pink-900">Year</th>
+                        <th class="p-4 text-left text-pink-900">Album</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Song X</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 3</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">2021</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 3</td>
+                    </tr>
+                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Song Y</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 4</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">2018</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 4</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Hybrid Filtering Recommendations -->
+        <div id="hybrid" class="recommendation-list hidden opacity-0 transform scale-95 transition-all duration-500">
+            <h3 class="text-xl font-semibold text-pink-900 mb-4">Best of Both</h3>
+            <table class="min-w-full bg-white bg-opacity-75 rounded-lg shadow-lg overflow-hidden">
+                <thead class="bg-yellow-100 text-white bg-opacity-70 shadow-lg">
+                    <tr class="border-b border-pink-500">
+                        <th class="p-4 text-left text-pink-900">Song Name</th>
+                        <th class="p-4 text-left text-pink-900">Artist</th>
+                        <th class="p-4 text-left text-pink-900">Year</th>
+                        <th class="p-4 text-left text-pink-900">Album</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Song M</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 5</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">2022</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 5</td>
+                    </tr>
+                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Song N</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 6</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">2020</td>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 6</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Sample song data (replace with your actual data or fetch from an API)
+    const songs = [
+        { name: "Song A", artist: "Artist 1", year: 2020, album: "Album 1" },
+        { name: "Song B", artist: "Artist 2", year: 2019, album: "Album 2" },
+        { name: "Song X", artist: "Artist 3", year: 2021, album: "Album 3" },
+        { name: "Song Y", artist: "Artist 4", year: 2018, album: "Album 4" },
+        { name: "Song M", artist: "Artist 5", year: 2022, album: "Album 5" },
+        { name: "Song N", artist: "Artist 6", year: 2020, album: "Album 6" },
+    ];
+
+    // Function to filter songs based on user input
+    function filterSongs(query) {
+        return songs.filter(song =>
+            song.name.toLowerCase().includes(query.toLowerCase()) ||
+            song.artist.toLowerCase().includes(query.toLowerCase())
+        );
+    }
+
+    // Function to display search results
+    function displayResults(results) {
+        const resultsContainer = document.getElementById('song-results');
+        resultsContainer.innerHTML = ''; // Clear previous results
+
+        if (results.length === 0) {
+            resultsContainer.innerHTML = '<p class="p-3 text-pink-700">No results found.</p>';
+            resultsContainer.classList.remove('hidden');
+            return;
+        }
+
+        results.forEach(song => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'p-3 hover:bg-pink-50 cursor-pointer text-pink-700';
+            resultItem.textContent = `${song.name} - ${song.artist} (${song.year})`;
+            resultItem.addEventListener('click', () => {
+                document.getElementById('song-search').value = `${song.name} - ${song.artist}`;
+                resultsContainer.classList.add('hidden');
+                console.log('Selected Song:', song); // You can replace this with logic to fetch recommendations
+            });
+            resultsContainer.appendChild(resultItem);
+        });
+
+        resultsContainer.classList.remove('hidden');
+    }
+
+    // Event listener for song search input
+    document.getElementById('song-search').addEventListener('input', function (e) {
+        const query = e.target.value.trim();
+        if (query.length > 0) {
+            const results = filterSongs(query);
+            displayResults(results);
+        } else {
+            document.getElementById('song-results').classList.add('hidden');
+        }
+    });
+
+    // Hide results when clicking outside
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('#song-search') && !e.target.closest('#song-results')) {
+            document.getElementById('song-results').classList.add('hidden');
+        }
+    });
+
+    // Filtering method selection logic
+    function setActive(element, type) {
+        // Reset all boxes
+        document.querySelectorAll('.filter-box').forEach(box => {
+            box.classList.remove('bg-pink-700');
+            box.querySelector('h3').classList.remove('text-white');
+            box.querySelector('h3').classList.add('text-pink-900');
+            box.querySelector('p').classList.remove('text-white');
+            box.querySelector('p').classList.add('text-pink-700');
+        });
+
+        // Set the clicked box as active
+        element.classList.add('bg-pink-700');
+        element.querySelector('h3').classList.remove('text-pink-900');
+        element.querySelector('h3').classList.add('text-white');
+        element.querySelector('p').classList.remove('text-pink-700');
+        element.querySelector('p').classList.add('text-white');
+
+        // Show recommendations
+        document.querySelectorAll('.recommendation-list').forEach(el => {
+            el.classList.add('hidden', 'opacity-0', 'scale-95');
+        });
+
+        const selected = document.getElementById(type);
+        selected.classList.remove('hidden', 'opacity-0', 'scale-95');
+        selected.classList.add('opacity-100', 'scale-100');
+    }
+</script>
 {% endblock %}
