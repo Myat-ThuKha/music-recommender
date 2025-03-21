@@ -1,3 +1,4 @@
+import ast
 from flask import Flask, render_template, request, redirect, url_for, session
 from pymongo import MongoClient
 # from surprise import SVD, Dataset, Reader, accuracy
@@ -5,7 +6,7 @@ from pymongo import MongoClient
 import pandas as pd
 import joblib
 import os
-
+from contentbased_recommender import recommend_songs
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'  # Replace with a secure key
 
@@ -267,6 +268,15 @@ def eda_content():
         '''
     else:
         return '<p class=text-pink-700>Select a dataset above to see its analysis.</p>'
+
+
+@app.route('/recommendation', methods=['POST'])
+def recommendation():
+    songs = recommend_songs([{'name': request.form['song_name'], 'year':2015 ,'artist': request.form['artist']}])
+    for song in songs:
+        song['artists'] = ast.literal_eval(song['artists'])
+    return render_template('recommended_songs.html',songs=songs,len=len(songs))
+
 
 @app.route('/eda_data_details', methods=['GET'])
 def eda_data_details():
