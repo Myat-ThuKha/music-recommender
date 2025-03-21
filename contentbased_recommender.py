@@ -5,8 +5,6 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
-from sklearn.manifold import TSNE
-from sklearn.decomposition import PCA
 from sklearn.metrics import euclidean_distances
 from scipy.spatial.distance import cdist
 
@@ -27,9 +25,9 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id='20d6ffba50
 
 
 
-def find_song(name, year,artist):
+def find_song(name,artist):
     song_data = defaultdict()
-    results = sp.search(q= 'track:{} year:{} artist:{}'.format(name,year,artist), limit=1)
+    results = sp.search(q= 'track:{} artist:{}'.format(name,artist), limit=1)
 
     if results['tracks']['items'] == []:
         return None
@@ -37,22 +35,26 @@ def find_song(name, year,artist):
     results = results['tracks']['items'][0]
     
     song_data['name'] = [name]
-    song_data['year'] = [year]
     song_data['explicit'] = [int(results['explicit'])]
     song_data['duration_ms'] = [results['duration_ms']]
     song_data['popularity'] = [results['popularity']]
+    year = int(results['album']['release_date'][:4])
+    song_data['year'] = [year]
     genres = sp.artists([str(results['artists'][0]['id'])])['artists'][0]['genres']
 
     if genres == []:
-        audio_features = year_data[year_data['year'] == year]
+        print("Searching by year...")
+        audio_features = year_data[year_data['year']== year]
         audio_features = audio_features.drop(columns=['year'])
         for key, value in audio_features.items():
             song_data[key] = value
     else:
+        print("Searching by genre...", genres[0])
         audio_features= genre_data[genre_data['genres'] == genres[0]]
         audio_features = audio_features.drop(columns=['genres'])
         for key, value in audio_features.items():
             song_data[key] = value
+    print(song_data)
     return pd.DataFrame(song_data)
 
 from collections import defaultdict
@@ -63,18 +65,20 @@ number_cols = ['valence','year', 'acousticness', 'danceability', 'duration_ms', 
 
 
 def get_song_data(song, spotify_data):
-    spotify_data[(spotify_data['name'] == song['name'])& (spotify_data['year'] == song['year'])]
      
     try:
-        song_data = spotify_data[(spotify_data['name'] == song['name']) 
-                                & (spotify_data['year'] == song['year'])].iloc[0]
+        song_data = spotify_data[(spotify_data['name'] == song['name'])].iloc[0]
         print("Song found in database!")
         return song_data
     
     except IndexError:
         
         print("Song not found in database. Searching Spotify...")
-        return find_song(song['name'],song['year'], song['artist']).iloc[0]
+        song_data = find_song(song['name'], song['artists'])
+        if song_data is None:
+            return None
+        else:
+            return song_data.iloc[0]
         
 
 def get_mean_vector(song_list, spotify_data):
@@ -108,7 +112,7 @@ def flatten_dict_list(dict_list):
 
 def recommend_songs( song_list, n_songs=10):
     
-    metadata_cols = ['name', 'year', 'artists']
+    metadata_cols = ['name', 'artists']
     song_dict = flatten_dict_list(song_list)
     
     song_center = get_mean_vector(song_list, data)

@@ -167,7 +167,7 @@ def logout():
 def recommend():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template('recommendations.html')
+    return render_template('recommendations.html',len=0,songs=0)
 
 @app.route('/songDetails', methods=['GET'])
 def songDetails():
@@ -272,10 +272,18 @@ def eda_content():
 
 @app.route('/recommendation', methods=['POST'])
 def recommendation():
-    songs = recommend_songs([{'name': request.form['song_name'], 'year':2015 ,'artist': request.form['artist']}])
+    songs = recommend_songs([{'name': request.form['song_name'] ,'artists': request.form['artist']}])
+    if(songs == None):
+        return render_template('recommendations.html',len=0,songs=[])
+    print("Songs",songs)
     for song in songs:
         song['artists'] = ast.literal_eval(song['artists'])
-    return render_template('recommended_songs.html',songs=songs,len=len(songs))
+        print("Song",song)
+    return render_template('recommendations.html',songs=songs,len=len(songs))
+
+@app.route('/user-based',methods=['POST'])
+def userbased():
+    return render_template('recommendations.html')
 
 
 @app.route('/eda_data_details', methods=['GET'])

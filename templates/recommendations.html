@@ -5,12 +5,15 @@
     <h2 class="text-3xl font-bold text-center text-pink-900 mb-6 animate-fade-in">Choose How We Recommend Songs</h2>
 
     <!-- Song Selection Box -->
-    <div class="mb-8 max-w-2xl mx-auto">
+    <div class="mb-8  mx-auto">
+        <form action="/recommendation" method="POST" style="display: flex;justify-content: space-evenly;
+    align-items: center; height: 40px;">
         <label for="song-search" class="block text-lg font-semibold text-pink-900 mb-2">Search for a Song</label>
-        <input type="text" id="song-search" class="w-full p-3 rounded-lg border border-pink-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-yellow bg-opacity-75 shadow-lg text-pink-700" placeholder="Type a song name or artist...">
-        <div id="song-results" class="mt-2 bg-yellow-100 bg-opacity-50 rounded-lg shadow-lg max-h-48 overflow-y-auto hidden">
-            <!-- Search results will be dynamically populated here -->
-        </div>
+        
+            <input style="width:300px; height:60px" type="text" id="song_name" name="song_name" class="w-full p-3 rounded-lg border border-pink-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-yellow bg-opacity-75 shadow-lg text-pink-700" placeholder="Type a song name...">
+            <input style="width:300px; height:60px" type="text" id="artist" name="artist" class="w-full p-3 rounded-lg border border-pink-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 bg-yellow bg-opacity-75 shadow-lg text-pink-700" placeholder="Type an artist's name...">
+            <input style="width:300px; height:60px" type = "submit" value = "Search" class="p-6 bg-yellow-100 text-pink-700 hover:text-white text-center cursor-pointer transform transition duration-500 hover:bg-pink-700 bg-opacity-50 group shadow-md"/>
+        </form>
     </div>
 
     <!-- Filtering Methods Selection -->
@@ -31,8 +34,12 @@
             <p class="text-pink-700 group-hover:text-white">Combining user preferences and song features</p>
         </div>
     </div>
-
+    {%if len == 0%}
+        <p class ="text-center">No Songs Found</p>
+    {%endif%}
     <!-- Recommendation Tables -->
+    {%if len != 0%}
+    <p class="text-center">Results are ready! Click one of the buttons to view</p>
     <div id="recommendation-container" class="mt-8">
         <!-- Collaborative Filtering Recommendations -->
         <div id="collaborative" class="recommendation-list hidden opacity-0 transform scale-95 transition-all duration-500">
@@ -42,23 +49,22 @@
                     <tr class="border-b border-pink-500">
                         <th class="p-4 text-left text-pink-900">Song Name</th>
                         <th class="p-4 text-left text-pink-900">Artist</th>
-                        <th class="p-4 text-left text-pink-900">Year</th>
-                        <th class="p-4 text-left text-pink-900">Album</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {%for i in range(0, 5)%}  
                     <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Song A</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 1</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">2020</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 1</td>
-                    </tr>
-                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Song B</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 2</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">2019</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 2</td>
-                    </tr>
+                        
+                        <td class="p-4 border-b border-pink-500 text-pink-700"><span class="text-pink-700">{{songs[i]['name']}}</span></td>
+                        <div>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">    
+                        {%for artist in songs[i]['artists']%}
+                            <span class="text-pink-700" style = "padding:2px">{{artist}},</span>
+                            {%endfor%}
+                        </div>
+                        </td>
+                    </tr> 
+                    {%endfor%} 
                 </tbody>
             </table>
         </div>
@@ -71,24 +77,22 @@
                     <tr class="border-b border-pink-500">
                         <th class="p-4 text-left text-pink-900">Song Name</th>
                         <th class="p-4 text-left text-pink-900">Artist</th>
-                        <th class="p-4 text-left text-pink-900">Year</th>
-                        <th class="p-4 text-left text-pink-900">Album</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {%for i in range(5, len)%}  
                     <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Song X</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 3</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">2021</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 3</td>
-                    </tr>
-                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Song Y</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 4</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">2018</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 4</td>
-                    </tr>
-                </tbody>
+                        
+                        <td class="p-4 border-b border-pink-500 text-pink-700"><span class="text-pink-700">{{songs[i]['name']}}</span></td>
+                        <div>
+                        <td class="p-4 border-b border-pink-500 text-pink-700">    
+                        {%for artist in songs[i]['artists']%}
+                            <span class="text-pink-700" style = "padding:2px">{{artist}},</span>
+                            {%endfor%}
+                        </div>
+                        </td>
+                    </tr> 
+                    {%endfor%} 
             </table>
         </div>
 
@@ -100,27 +104,27 @@
                     <tr class="border-b border-pink-500">
                         <th class="p-4 text-left text-pink-900">Song Name</th>
                         <th class="p-4 text-left text-pink-900">Artist</th>
-                        <th class="p-4 text-left text-pink-900">Year</th>
-                        <th class="p-4 text-left text-pink-900">Album</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Song M</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 5</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">2022</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 5</td>
-                    </tr>
-                    <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Song N</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Artist 6</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">2020</td>
-                        <td class="p-4 border-b border-pink-500 text-pink-700">Album 6</td>
-                    </tr>
+                        {%for i in range(0,5)%}  
+                        <tr class="hover:bg-pink-50 transition duration-200 bg-yellow-100 bg-opacity-10 shadow-lg">
+                            
+                            <td class="p-4 border-b border-pink-500 text-pink-700"><span class="text-pink-700">{{songs[i+2]['name']}}</span></td>
+                            <div>
+                            <td class="p-4 border-b border-pink-500 text-pink-700">    
+                            {%for artist in songs[i+2]['artists']%}
+                                <span class="text-pink-700" style = "padding:2px">{{artist}},</span>
+                                {%endfor%}
+                            </div>
+                            </td>
+                        </tr> 
+                        {%endfor%} 
                 </tbody>
             </table>
         </div>
     </div>
+    {%endif%}
 </div>
 
 <script>
